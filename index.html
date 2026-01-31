@@ -177,14 +177,51 @@
             margin-top: 30px;
         }
 
-        /* Mobile adjustments */
-        @media (max-width: 600px) {
-            .envelope-wrapper { width: 320px; height: 220px; }
-            .envelope::before { border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 110px solid var(--envelope-color); }
-            .envelope::after { border-left: 160px solid var(--envelope-front); border-right: 160px solid var(--envelope-front); border-top: 110px solid transparent; border-bottom: 110px solid var(--envelope-front); }
-            .open .letter { width: 300px; left: 10px; height: 500px; }
-            .heart { top: 85px; width: 40px; height: 40px; }
-        }
+	        /* Mobile adjustments */
+	        @media (max-width: 600px) {
+			    .envelope-wrapper { 
+			        width: 85vw; /* Scales based on screen width */
+			        height: calc(85vw * 0.7); 
+			    }
+			
+			    .envelope::before { 
+			        border-left: 42.5vw solid transparent; 
+			        border-right: 42.5vw solid transparent; 
+			        border-top: 30vw solid var(--envelope-color); 
+			    }
+			
+			    .envelope::after { 
+			        border-left: 42.5vw solid var(--envelope-front); 
+			        border-right: 42.5vw solid var(--envelope-front); 
+			        border-top: 30vw solid transparent; 
+			        border-bottom: 30vw solid var(--envelope-front); 
+			    }
+	
+			    /* The Fix for the Letter on Mobile */
+			    .open .letter { 
+			        width: 90vw; /* Keeps the letter slightly narrower than the screen */
+			        height: 70vh; /* Limits height so it doesn't disappear off-screen */
+			        left: -2.5vw; /* Adjusts the horizontal offset for centering */
+			        bottom: 15vh; /* Shifts it up enough to see the envelope base */
+			        padding: 25px; /* Thinner padding so text has more room */
+			        box-sizing: border-box; /* Crucial: keeps padding inside the width */
+			    }
+			
+			    .letter-text {
+			        font-size: 1rem; /* Slightly smaller for mobile readability */
+			        line-height: 1.6;
+			    }
+			
+			    .heart { 
+			        top: 50%; /* Keeps the heart centered on the lid line */
+			        width: 40px; 
+			        height: 40px; 
+			    }
+			
+			    .signature {
+			        font-size: 1.5rem;
+			    }
+		}
     </style>
 </head>
 <body>
