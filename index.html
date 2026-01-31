@@ -25,7 +25,6 @@
             overflow: hidden;
         }
 
-        /* Starry Background */
         #stars-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -46,18 +45,18 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* BIGGER Envelope Logic */
         .envelope-wrapper {
             position: relative;
-            width: 500px; /* Increased from 350px */
-            height: 350px; /* Increased from 250px */
+            width: 500px;
+            height: 350px;
             cursor: pointer;
             z-index: 2;
-            transition: transform 0.3s ease;
+            transition: transform 0.8s ease-in-out; /* Smooth transition for shifting down */
         }
 
-        .envelope-wrapper:hover {
-            transform: scale(1.02);
+        /* SHIFT DOWN: This moves the whole unit down when opened */
+        .envelope-wrapper.open {
+            transform: translateY(150px);
         }
 
         .envelope {
@@ -69,20 +68,18 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.7);
         }
 
-        /* The Lid/Flap - Adjusted for new size */
         .envelope::before {
             content: "";
             position: absolute;
             top: 0;
             z-index: 3;
-            border-left: 250px solid transparent; /* Half of 500px */
+            border-left: 250px solid transparent;
             border-right: 250px solid transparent;
             border-top: 175px solid var(--envelope-color);
             transform-origin: top;
             transition: transform 0.8s ease;
         }
 
-        /* The Front Pocket */
         .envelope::after {
             content: "";
             position: absolute;
@@ -97,47 +94,44 @@
             border-radius: 0 0 15px 15px;
         }
 
-        /* The Wax Seal - Bigger */
         .heart {
-        position: absolute;
-        top: 175px; /* Halfway point of the triangle flap */
-        left: 50%;
-        transform: translate(-50%, -50%); /* Perfectly centers the element on its origin */
-        width: 50px;
-        height: 50px;
-        z-index: 4;
-        transition: opacity 0.4s ease, visibility 0.4s;
-    }
+            position: absolute;
+            top: 175px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            z-index: 4;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
 
-    .heart::before {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 100%;
-        background: var(--heart-color);
-        clip-path: font-size;
-        mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
-        -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
-    }
+        .heart::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: var(--heart-color);
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+        }
 
-    /* Adjusting the Letter starting position to hide better */
-    .letter {
-        position: absolute;
-        bottom: 0; /* Changed from 20px to sit lower */
-        left: 20px;
-        right: 20px;
-        height: 85%;
-        background: #fffdfa;
-        padding: 40px;
-        z-index: 1;
-        transition: all 0.8s ease;
-        border-radius: 5px;
-        box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
-        visibility: hidden; /* Keep it hidden until the lid starts moving */
-        opacity: 0;
-    }
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 85%;
+            background: #fffdfa;
+            padding: 40px;
+            z-index: 1;
+            transition: all 0.8s ease;
+            border-radius: 5px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            visibility: hidden;
+            opacity: 0;
+            overflow-y: auto;
+        }
 
-        /* Animation when Opened */
         .open .envelope::before {
             transform: rotateX(180deg);
             z-index: 0;
@@ -145,46 +139,47 @@
         
         .open .heart {
             opacity: 0;
+            visibility: hidden;
         }
 
         .open .letter {
             visibility: visible;
             opacity: 1;
-            height: 500px; /* Reduced fixed height for stability */
-            width: 110%; /* Makes letter slightly wider than envelope */
-            left: -5%; /* Centers the wider letter */
-            bottom: 100px; 
+            height: 600px; /* Bigger letter area */
+            width: 110%;
+            left: -5%;
+            bottom: 120px; 
             z-index: 5;
-            overflow-y: auto;
-            box-sizing: border-box; /* Prevents padding from causing overflow */
+            padding: 40px;
+            box-sizing: border-box;
         }
 
-    .open .heart {
-        opacity: 0;
-        visibility: hidden;
-    }
+        /* HIDE TEXT: Removes instruction once opened */
+        .instruction {
+            transition: opacity 0.5s ease;
+        }
+        .open .instruction {
+            opacity: 0;
+            visibility: hidden;
+        }
 
         .letter-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            line-height: 2;
+            font-size: 1.1rem;
+            line-height: 1.8;
             color: #4a3f35;
         }
 
-        .signature {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: #8e7d71;
-            margin-top: 30px;
-        }
-
-	        /* Mobile adjustments */
-	        @media (max-width: 600px) {
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
             .envelope-wrapper { 
                 width: 85vw; 
                 height: calc(85vw * 0.7); 
             }
             
+            .envelope-wrapper.open {
+                transform: translateY(20vh); /* Moves down even more on small screens */
+            }
+
             .envelope::before { 
                 border-left: 42.5vw solid transparent; 
                 border-right: 42.5vw solid transparent; 
@@ -198,41 +193,22 @@
                 border-bottom: 30vw solid var(--envelope-front); 
             }
 
-            /* The Mobile "Sweet Spot" for the Letter */
             .open .letter { 
-                width: 90vw; 
-                height: 65vh; /* Uses viewport height to ensure it fits any phone */
-                left: -2.5vw; 
-                bottom: 10vh; /* Keeps it from flying off the top */
-                padding: 20px; 
-                box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+                width: 92vw; 
+                height: 65vh; 
+                left: -3.5vw; 
+                bottom: 15vh; 
+                padding: 25px; 
             }
             
             .letter-text {
-                font-size: 1.05rem; 
+                font-size: 1rem;
                 line-height: 1.6;
-            }
-            
-            .heart { 
-                top: 40%; /* Adjusted for mobile flap proportion */
-                width: 40px; 
-                height: 40px; 
-            }
-            
-            .signature {
-                font-size: 1.6rem;
-                margin-top: 20px;
             }
         }
 
-        /* 3. Hide Scrollbar but keep functionality (Optional/Clean look) */
-        .letter::-webkit-scrollbar {
-            width: 4px;
-        }
-        .letter::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.1);
-            border-radius: 10px;
-        }
+        .letter::-webkit-scrollbar { width: 4px; }
+        .letter::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -244,29 +220,24 @@
             <div class="heart"></div>
             <div class="letter">
                 <div class="container-fluid">
-                    <h2 class="border-bottom pb-3 mb-4" style="color: #8e7d71; font-style: italic;">Dearest Ella,</h2>
+                    <h2 class="border-bottom pb-3 mb-4" style="color: #8e7d71; font-style: italic; font-size: 1.5rem;">Dearest Ella,</h2>
                     <div class="letter-text">
                         Reading your words felt like an exhale I didn’t know I was holding in. If my name feels euphonious to you, then your heart feels like home to me.<br><br>
-                       I’m sorry the "ache" found you earlier while I was asleep, but please know that even in my dreams, I carry the weight of how much you mean to me. You talk about wanting to be "perfect" and keeping things light, but I need you to know something: I don’t need the polished, plastic version of you. I love the version of you that is sentimental, the version that feels things deeply, and even the version that thinks she falls short. You aren’t a project to be perfected; you are a person to be known.<br><br>
+                        I’m sorry the "ache" found you earlier while I was asleep, but please know that even in my dreams, I carry the weight of how much you mean to me. You talk about wanting to be "perfect" and keeping things light, but I need you to know something: I don’t need the polished, plastic version of you. I love the version of you that is sentimental, the version that feels things deeply, and even the version that thinks she falls short. You aren’t a project to be perfected; you are a person to be known.<br><br>
                         You mentioned existentialism—the idea that we are responsible for the meaning we create. If the universe is as vast and uncertain as they say, then choosing you is the most "intentional" thing I have ever done. You aren't just a part of my day; you are the lens through which the day becomes worth looking at.<br>
-						<ul>
-						<li>Thank you for choosing to be vulnerable instead of hiding.</li>
-						
-						<li>Thank you for learning my language and making my world lighter.</li>
-
-						<li>Thank you for being the one who makes me want to show up, too.</li>
-
-						<li>And thank you for being the one to intentionally choose me everyday too.</li>
-						</ul>
-						
-						You see me as the "coolest" or "smartest," but the truth is, I’m just a person who got incredibly lucky to be found by you in that "unknown" place. You haven't just touched my heart; you've settled into it.
-						
-						Rest well, and don't worry about being "better" for me. Just keep being you. That is more than enough. I’ll see you soon, and yes—I’m already smiling thinking about it.<br><br>
+                        <ul class="mt-3">
+                            <li>Thank you for choosing to be vulnerable instead of hiding.</li>
+                            <li>Thank you for learning my language and making my world lighter.</li>
+                            <li>Thank you for being the one who makes me want to show up, too.</li>
+                            <li>And thank you for being the one to intentionally choose me every day too.</li>
+                        </ul>
+                        You see me as the "coolest" or "smartest," but the truth is, I’m just a person who got incredibly lucky to be found by you in that "unknown" place. You haven't just touched my heart; you've settled into it.<br><br>
+                        Rest well, and don't worry about being "better" for me. Just keep being you. That is more than enough. I’ll see you soon, and yes—I’m already smiling thinking about it.<br><br>
                     </div>
                 </div>
             </div>
         </div>
-        <p class="text-center text-light mt-5 opacity-50">(Tap the heart to open your letter)</p>
+        <p class="instruction text-center text-light mt-5 opacity-50">(Tap the heart to open your letter)</p>
     </div>
 
     <script>
