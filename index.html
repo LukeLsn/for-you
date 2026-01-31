@@ -212,10 +212,14 @@
     </style>
 </head>
 <body>
-
+	<audio id="background-music" loop>
+    <source src="./wanderlust.mp3" type="audio/mpeg">
+	</audio>
     <div id="stars-container"></div>
+	
 
-    <div class="envelope-wrapper" onclick="this.classList.toggle('open')">
+
+    <div class="envelope-wrapper" onclick="openLetter(this)">
         <div class="envelope">
             <div class="heart"></div>
             <div class="letter">
@@ -241,6 +245,20 @@
     </div>
 
     <script>
+	
+		function openLetter(wrapper) {
+		const music = document.getElementById('background-music');
+		
+		wrapper.classList.toggle('open');
+		
+		if (wrapper.classList.contains('open')) {
+			music.play().catch(e => console.log("Playback blocked until user interacts."));
+		} else {
+			music.pause();
+			music.currentTime = 0;
+		}
+}
+	
         const container = document.getElementById('stars-container');
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
