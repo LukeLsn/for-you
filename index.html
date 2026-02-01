@@ -3,274 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Letter for You</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <title>Our Journey to Feb 14</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0b1021;
-            --envelope-color: #d4c3b3;
-            --envelope-front: #e0d0c0;
-            --heart-color: #a33b3b;
+            --locked-color: rgba(255, 255, 255, 0.2);
+            --unlocked-color: #ff4d6d;
         }
 
         body {
-            background: var(--bg-color);
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            color: white;
+            font-family: 'Playfair Display', serif;
             margin: 0;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            font-family: 'Playfair Display', serif;
-            overflow: hidden;
+            padding: 50px 20px;
+            overflow-x: hidden;
         }
 
-        #stars-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-        }
+        h1 { font-weight: normal; font-style: italic; margin-bottom: 50px; text-align: center; opacity: 0.9; }
 
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: twinkle var(--duration) infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .envelope-wrapper {
+        .path-container {
             position: relative;
-            width: 500px;
-            height: 350px;
-            cursor: pointer;
-            z-index: 2;
-            transition: transform 0.8s ease-in-out; /* Smooth transition for shifting down */
-        }
-
-        /* SHIFT DOWN: This moves the whole unit down when opened */
-        .envelope-wrapper.open {
-            transform: translateY(150px);
-        }
-
-        .envelope {
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
             width: 100%;
-            height: 100%;
-            background: var(--envelope-color);
-            border-radius: 0 0 15px 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            max-width: 400px;
         }
 
-        .envelope::before {
-            content: "";
+        /* The dotted line connecting hearts */
+        .path-container::before {
+            content: '';
             position: absolute;
-            top: 0;
-            z-index: 3;
-            border-left: 250px solid transparent;
-            border-right: 250px solid transparent;
-            border-top: 175px solid var(--envelope-color);
-            transform-origin: top;
-            transition: transform 0.8s ease;
-        }
-
-        .envelope::after {
-            content: "";
-            position: absolute;
-            z-index: 2;
-            bottom: 0;
-            width: 0;
-            height: 0;
-            border-top: 175px solid transparent;
-            border-left: 250px solid var(--envelope-front);
-            border-right: 250px solid var(--envelope-front);
-            border-bottom: 175px solid var(--envelope-front);
-            border-radius: 0 0 15px 15px;
-        }
-
-        .heart {
-            position: absolute;
-            top: 175px;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            z-index: 4;
-            transition: opacity 0.4s ease, visibility 0.4s;
-        }
-
-        .heart::before {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 100%;
-            background: var(--heart-color);
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
-        }
-
-        .letter {
-            position: absolute;
-            bottom: 0;
-            left: 20px;
-            right: 20px;
-            height: 85%;
-            background: #fffdfa;
-            padding: 40px;
-            z-index: 1;
-            transition: all 0.8s ease;
-            border-radius: 5px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
-            visibility: hidden;
-            opacity: 0;
-            overflow-y: auto;
-        }
-
-        .open .envelope::before {
-            transform: rotateX(180deg);
+            top: 0; bottom: 0; width: 2px;
+            border-left: 2px dashed rgba(255,255,255,0.1);
             z-index: 0;
         }
-        
-        .open .heart {
-            opacity: 0;
+
+        .milestone {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: 100px; /* Constrains the clickable area */
+        }
+
+        .heart-node {
+            width: 40px;
+            height: 40px;
+            background: var(--locked-color);
+            position: relative;
+            transform: rotate(-45deg);
+            transition: all 0.5s ease;
+            margin-bottom: 20px; /* Creates consistent space for the label */
+        }
+		
+		/* Standard CSS Heart Shape */
+        .heart-node::before,
+        .heart-node::after {
+            content: "";
+            width: 40px;
+            height: 40px;
+            background: inherit;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .heart-node::before { top: -20px; left: 0; }
+        .heart-node::after { left: 20px; top: 0; }
+
+        .milestone.unlocked .heart-node {
+            background: var(--unlocked-color);
+            box-shadow: 0 0 20px var(--unlocked-color);
+        }
+
+        .date-label {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            margin-top: 10px; /* Pulls the text closer to the heart */
+        }
+
+        /* Styles for Unlocked Hearts */
+        .milestone.unlocked .heart-node {
+            background: var(--unlocked-color);
+            box-shadow: 0 0 20px var(--unlocked-color);
+            filter: drop-shadow(0 0 10px var(--unlocked-color));
+        }
+
+        .milestone.unlocked:hover { transform: scale(1.1); }
+
+        .date-label {
+            margin-top: 35px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .milestone.unlocked .date-label { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        /* Locked Shake Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+
+        #toast {
             visibility: hidden;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px 25px;
+            position: fixed;
+            z-index: 10;
+            bottom: 30px;
+            font-size: 0.9rem;
         }
 
-        .open .letter {
-            visibility: visible;
-            opacity: 1;
-            height: 600px; /* Bigger letter area */
-            width: 110%;
-            left: -5%;
-            bottom: 120px; 
-            z-index: 5;
-            padding: 40px;
-            box-sizing: border-box;
+        #toast.show { visibility: visible; animation: fadeInOut 2s; }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; bottom: 0; }
+            20% { opacity: 1; bottom: 30px; }
+            80% { opacity: 1; bottom: 30px; }
+            100% { opacity: 0; bottom: 0; }
         }
-
-        /* HIDE TEXT: Removes instruction once opened */
-        .instruction {
-            transition: opacity 0.5s ease;
-        }
-        .open .instruction {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .letter-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #4a3f35;
-        }
-
-        /* Mobile adjustments */
-        @media (max-width: 600px) {
-            .envelope-wrapper { 
-                width: 85vw; 
-                height: calc(85vw * 0.7); 
-            }
-            
-            .envelope-wrapper.open {
-                transform: translateY(20vh); /* Moves down even more on small screens */
-            }
-
-            .envelope::before { 
-                border-left: 42.5vw solid transparent; 
-                border-right: 42.5vw solid transparent; 
-                border-top: 30vw solid var(--envelope-color); 
-            }
-            
-            .envelope::after { 
-                border-left: 42.5vw solid var(--envelope-front); 
-                border-right: 42.5vw solid var(--envelope-front); 
-                border-top: 30vw solid transparent; 
-                border-bottom: 30vw solid var(--envelope-front); 
-            }
-
-            .open .letter { 
-                width: 92vw; 
-                height: 65vh; 
-                left: -3.5vw; 
-                bottom: 15vh; 
-                padding: 25px; 
-            }
-            
-            .letter-text {
-                font-size: 1rem;
-                line-height: 1.6;
-            }
-        }
-
-        .letter::-webkit-scrollbar { width: 4px; }
-        .letter::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
-	<audio id="background-music" loop>
-    <source src="./wanderlust.mp3" type="audio/mpeg">
-	</audio>
-    <div id="stars-container"></div>
-	
 
+    <h1>Our Valentine's Roadmap</h1>
 
-    <div class="envelope-wrapper" onclick="openLetter(this)">
-        <div class="envelope">
-            <div class="heart"></div>
-            <div class="letter">
-                <div class="container-fluid">
-                    <h2 class="border-bottom pb-3 mb-4" style="color: #8e7d71; font-style: italic; font-size: 1.5rem;">Dearest Ella,</h2>
-                    <div class="letter-text">
-                        I’ve been holding onto the words you sent me a few weeks ago, letting them settle in my heart while I waited for a day as special as today to tell you this: If my name feels euphonious to you, then your heart feels like home to me. <br><br>
-						I remember you mentioning that "ache" you felt that day, and the pressure you feel to be "perfect" or keep things light. I need you to know—today and every day—that I don’t need a polished, plastic version of you. I love the version of you that is sentimental, the version that feels things deeply, and even the version that thinks she falls short. You aren’t a project to be perfected; you are a person to be known. <br><br>
-						You spoke about existentialism—the idea that we create our own meaning. In this vast, uncertain universe, choosing you is the most "intentional" thing I have ever done. You aren't just a part of my day; you are the lens through which the whole world becomes worth looking at. <br>
-						    <ul class="mt-3">
-						        <li>Thank you for choosing to be vulnerable instead of hiding.</li>
-						        <li>Thank you for learning my language and making my world lighter.</li>
-						        <li>Thank you for being the one who makes me want to show up, too.</li>
-						        <li>And thank you for being the one to intentionally choose me every day, too.</li>
-						    </ul>
-						<br>
-						    You see me as the "coolest" or "smartest," but I’m just a person who got incredibly lucky to be found by you in that "unknown" place. You haven't just touched my heart; you've settled into it.<br><br>
-						    So on this Valentine's Day, don't worry about being "better" for me. Just keep being you. That is more than enough for a lifetime. I’ll see you soon.<br><br>
-                    </div>
-                </div>
-            </div>
+    <div class="path-container" id="roadmap">
         </div>
-        <p class="instruction text-center text-light mt-5 opacity-50">(Tap the heart to open your letter)</p>
-    </div>
+
+    <div id="toast">Patience, Ella... it's not time yet. ❤️</div>
 
     <script>
-	
-		function openLetter(wrapper) {
-		const music = document.getElementById('background-music');
-		
-		wrapper.classList.toggle('open');
-		
-		if (wrapper.classList.contains('open')) {
-			music.play().catch(e => console.log("Playback blocked until user interacts."));
-		} else {
-			music.pause();
-			music.currentTime = 0;
-		}
-}
-	
-        const container = document.getElementById('stars-container');
-        for (let i = 0; i < 150; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 3 + 'px';
-            star.style.width = size;
-            star.style.height = size;
-            star.style.top = Math.random() * 100 + '%';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
-            container.appendChild(star);
+        const milestones = [
+            { date: '2026-02-01', label: 'FEB 01', link: 'memory1.html' },
+            { date: '2026-02-03', label: 'FEB 03', link: 'memory2.html' },
+            { date: '2026-02-05', label: 'FEB 05', link: 'memory3.html' },
+            { date: '2026-02-07', label: 'FEB 07', link: 'memory4.html' },
+            { date: '2026-02-09', label: 'FEB 09', link: 'memory5.html' },
+            { date: '2026-02-11', label: 'FEB 11', link: 'memory6.html' },
+            { date: '2026-02-14', label: 'THE FINALE', link: 'letter.html' }
+        ];
+
+        const container = document.getElementById('roadmap');
+        const now = new Date();
+
+        milestones.forEach((m, index) => {
+            const mDate = new Date(m.date);
+            const isUnlocked = now >= mDate;
+
+            const div = document.createElement('div');
+            div.className = `milestone ${isUnlocked ? 'unlocked' : 'locked'}`;
+            div.innerHTML = `
+                <div class="heart-node"></div>
+                <div class="date-label">${m.label}</div>
+            `;
+
+            div.onclick = () => {
+                if (isUnlocked) {
+                    window.location.href = m.link;
+                } else {
+                    div.classList.add('shake');
+                    setTimeout(() => div.classList.remove('shake'), 400);
+                    showToast();
+                }
+            };
+
+            container.appendChild(div);
+        });
+
+        function showToast() {
+            const x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(() => { x.className = x.className.replace("show", ""); }, 2000);
         }
     </script>
 </body>
