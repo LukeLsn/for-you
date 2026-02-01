@@ -1,0 +1,61 @@
+/* style.css */
+body {
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.content-card {
+    width: 90%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+h1 { font-style: italic; font-size: 1.5rem; color: #ff4d6d; margin-bottom: 20px; }
+p { line-height: 1.8; opacity: 0.9; font-size: 1.05rem; }
+
+/* Shared Buttons */
+.back-btn {
+    margin-top: 30px;
+    display: inline-block;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    color: white;
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+}
+
+.spotify-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: #1DB954;
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: transform 0.3s;
+}
+
+.spotify-btn:hover { transform: scale(1.05); }
