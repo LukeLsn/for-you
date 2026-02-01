@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Beginning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./style.css">
+    <style>
+    /* 2. Keep ONLY the unique stacking styles here */
+        .polaroid-stack {
+		position: relative;
+		width: 100%;
+		/* Increase height slightly to give the stack room to breathe */
+		height: 420px; 
+		margin: 0 auto 40px auto; /* Centers the container itself */
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+}
+
+        .polaroid {
+			position: absolute;
+			/* Removed 'top: 0; left: 0;' to allow flex centering to work */
+			background: white;
+			padding: 10px 10px 35px 10px;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+			transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+			
+			/* Fixed frame size keeps the 'stack' looking uniform */
+			width: 280px;
+			height: 360px;
+			
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start; /* Keeps the photo at the top of the white frame */
+		}
+
+        .polaroid img {
+			width: 100%;
+			height: 280px; /* Leave room for the white space at the bottom */
+			object-fit: contain; /* Shows full image without cropping */
+			background: #f9f9f9; /* Subtle fill for landscape photos */
+			display: block;
+		}
+
+        /* Random tilts for the stack effect */
+        .polaroid:nth-child(1) { transform: rotate(3deg); }
+        .polaroid:nth-child(2) { transform: rotate(-2deg); }
+        .polaroid:nth-child(3) { transform: rotate(5deg); }
+        .polaroid:nth-child(4) { transform: rotate(-4deg); }
+        .polaroid:nth-child(5) { transform: rotate(2deg); }
+		
+		/* Active/Top Photo */
+        .polaroid.active {
+            z-index: 10;
+            opacity: 1;
+        }
+		
+		/* Animation when moving to the back */
+        .polaroid.out {
+            transform: translateY(-120%) rotate(20deg) scale(0.8) !important;
+            opacity: 0;
+            z-index: 11;
+        }
+
+        .polaroid.disappear {
+            transform: translateY(-120%) rotate(20deg) scale(0.8) !important;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        /* Shake animation for the final photo */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+</style>
+</head>
+<body>
+
+    <div class="content-card">
+    <div class="polaroid-stack" onclick="rotatePhotos()">
+        <div class="polaroid"><img src="./m2p/1.png" alt="Memory 5"></div>
+        <div class="polaroid"><img src="./m2p/2.jpg" alt="Memory 4"></div>
+        <div class="polaroid"><img src="./m2p/3.png" alt="Memory 3"></div>
+        <div class="polaroid"><img src="./m2p/4.png" alt="Memory 2"></div>
+        <div class="polaroid"><img src="./m2p/5.jpg" alt="Memory 1"></div>
+    </div>
+
+    <h1>Feb 03: The Time Capsule</h1>
+    <p>"I went back to where it all started. Every click is a step back through our story."</p>
+    
+    <a href="index.html" class="back-btn">← Back to the Roadmap</a>
+</div>
+</body>
+
+<script>
+    let currentIndex = 0;
+        const stack = document.querySelectorAll('.polaroid');
+
+        function rotatePhotos() {
+            const topPhoto = stack[currentIndex];
+
+            // 1. Send the current photo "out"
+            topPhoto.classList.add('out');
+            topPhoto.classList.remove('active');
+
+            // 2. Calculate next photo index
+            currentIndex = (currentIndex + 1) % stack.length;
+            const nextPhoto = stack[currentIndex];
+
+            // 3. Bring next photo to the top immediately (behind the one flying away)
+            nextPhoto.classList.add('active');
+
+            // 4. After animation, move the "out" photo back to the bottom of the pile
+            setTimeout(() => {
+                topPhoto.classList.remove('out');
+                // The z-index is handled by the .active class
+            }, 600);
+        }
+</script>
+</html>
