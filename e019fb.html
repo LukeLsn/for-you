@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Future</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        .bucket-list {
+            text-align: left;
+            margin: 30px auto;
+            max-width: 350px;
+        }
+
+        .bucket-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .bucket-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .bucket-item h2 {
+            font-size: 1rem;
+            color: #ff4d6d;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .bucket-item h2::before {
+            content: '\2605';
+            margin-right: 10px;
+            font-weight: normal;
+        }
+
+        .bucket-item p {
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.4;
+            opacity: 0.8;
+        }
+
+        .stars-decoration {
+            font-size: 1.2rem;
+            color: #ff4d6d;
+            margin-top: 20px;
+            letter-spacing: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-card">
+        <h1>Feb 09: What Comes Next</h1>
+        <p>Meaning isn't just found in what we've done, but in what we choose to do next. Here is what I'm looking forward to with you.</p>
+
+        <div class="bucket-list">
+            <div class="bucket-item">
+                <h2>The Big One</h2>
+                <p>To finally close the distance. No more screens, no more time zones. Just us in the same physical space.</p>
+            </div>
+
+            <div class="bucket-item">
+                <h2>From Screen to Table</h2>
+                <p>I'm hanging up the camera. I want to cook you those meals I've shown you on our calls and finally have you taste them for yourself.</p>
+            </div>
+
+            <div class="bucket-item">
+                <h2>Under the Real Void</h2>
+                <p>To find a place where the stars are actually visible. We talk about the universe so much; I want to stand under it with you.</p>
+            </div>
+        </div>
+		
+		<p>There's a whole lot more but these are the top three I want to experience with you.</p>
+
+        <div class="stars-decoration">&#9733; &#9733; &#9733;</div>
+        
+        <a href="index.html" class="back-btn">&larr; Back to the Roadmap</a>
+    </div>
+
+</body>
+</html>

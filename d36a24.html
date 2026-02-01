@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seven Reasons</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        .list-container {
+            text-align: left;
+            margin: 30px auto;
+            max-width: 320px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid #ff4d6d;
+        }
+
+        .reason-item {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: slideIn 0.5s forwards;
+        }
+
+        .reason-number {
+            color: #ff4d6d;
+            font-weight: bold;
+            margin-right: 10px;
+            font-style: italic;
+        }
+
+        .reason-text {
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        /* Staggered animation for the list */
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Delays for each item */
+        .reason-item:nth-child(1) { animation-delay: 0.3s; }
+        .reason-item:nth-child(2) { animation-delay: 0.6s; }
+        .reason-item:nth-child(3) { animation-delay: 0.9s; }
+        .reason-item:nth-child(4) { animation-delay: 1.2s; }
+        .reason-item:nth-child(5) { animation-delay: 1.5s; }
+        .reason-item:nth-child(6) { animation-delay: 1.8s; }
+        .reason-item:nth-child(7) { animation-delay: 2.1s; }
+    </style>
+</head>
+<body>
+
+    <div class="content-card">
+        <h1>Feb 07: Seven Reasons</h1>
+        <p>"Seven things about you that make my world a lot brighter."</p>
+
+        <div class="list-container">
+            <div class="reason-item"><span class="reason-number">01.</span><span class="reason-text">The way you don't shy away from the 'big' questions.</span></div>
+            <div class="reason-item"><span class="reason-number">02.</span><span class="reason-text">How you can make me feel like you're sitting right next to me through a screen. You have a way of shrinking the miles.</span></div>
+            <div class="reason-item"><span class="reason-number">03.</span><span class="reason-text">Your 'sleepy voice' or the way you look when you've just woken up—completely real and completely you.</span></div>
+            <div class="reason-item"><span class="reason-number">04.</span><span class="reason-text">The way you listen. You don't just hear the words; you actually feel what I'm saying.</span></div>
+            <div class="reason-item"><span class="reason-number">05.</span><span class="reason-text">Your specific, genuine laugh that lights up everything.</span></div>
+            <div class="reason-item"><span class="reason-number">06.</span><span class="reason-text">How you see the world differently than anyone I've ever met. You notice the small details I usually miss.</span></div>
+            <div class="reason-item"><span class="reason-number">07.</span><span class="reason-text">The fact that out of everyone in the world, you choose me every single day. I never take that for granted.</span></div>
+        </div>
+        
+        <a href="index.html" class="back-btn">← Back to the Roadmap</a>
+    </div>
+
+</body>
+</html>

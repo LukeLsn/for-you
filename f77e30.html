@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message for You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+	<style>
+    /* Custom Player Styling */
+    .custom-player {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .play-trigger {
+        background: #ff4d6d;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+        transition: transform 0.2s;
+    }
+
+    .play-trigger:active { transform: scale(0.9); }
+
+    .progress-area {
+        flex-grow: 1;
+    }
+
+    .bar-bg {
+        background: rgba(255, 255, 255, 0.1);
+        height: 6px;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .bar-fill {
+        background: #ff4d6d;
+        width: 0%;
+        height: 100%;
+        transition: width 0.1s linear;
+    }
+
+    .time-display {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        margin-top: 8px;
+        opacity: 0.6;
+        font-family: sans-serif; /* Cleaner for numbers */
+    }
+</style>
+    
+    <style>
+        .media-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 30px auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 320px;
+        }
+
+        video, audio {
+            width: 100%;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .countdown-text {
+            font-style: italic;
+            color: #ff4d6d;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        .pulse {
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-card">
+        <h1>Feb 11: Almost There</h1>
+        <p>"Just a little reminder of my voice before the big day."</p>
+
+        <div class="media-container">
+    <audio id="myAudio">
+        <source src="./m6v/voice-note.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="custom-player">
+        <button id="playBtn" class="play-trigger">
+            <span id="playIcon">▶</span>
+        </button>
+        
+        <div class="progress-area">
+            <div class="bar-bg">
+                <div id="progressBar" class="bar-fill"></div>
+            </div>
+            <div class="time-display">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <p class="countdown-text pulse">Only three more sleeps until your final surprise.</p>
+        
+        <a href="index.html" class="back-btn">&larr; Back to the Roadmap</a>
+    </div>
+
+</body>
+<script>
+    const audio = document.getElementById('myAudio');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+
+    // Toggle Play/Pause
+    playBtn.onclick = () => {
+        if (audio.paused) {
+            audio.play();
+            playIcon.innerText = '⏸';
+        } else {
+            audio.pause();
+            playIcon.innerText = '▶';
+        }
+    };
+
+    // Update Progress Bar & Time
+    audio.ontimeupdate = () => {
+        const pct = (audio.currentTime / audio.duration) * 100;
+        progressBar.style.width = pct + '%';
+        
+        // Format time
+        const curMins = Math.floor(audio.currentTime / 60);
+        const curSecs = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
+        currentTimeEl.innerText = `${curMins}:${curSecs}`;
+    };
+
+    // Load Metadata to show duration
+    audio.onloadedmetadata = () => {
+        const durMins = Math.floor(audio.duration / 60);
+        const durSecs = Math.floor(audio.duration % 60).toString().padStart(2, '0');
+        durationEl.innerText = `${durMins}:${durSecs}`;
+    };
+</script>
+</html>
