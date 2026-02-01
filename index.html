@@ -37,7 +37,6 @@
             max-width: 400px;
         }
 
-        /* The dotted line connecting hearts */
         .path-container::before {
             content: '';
             position: absolute;
@@ -53,7 +52,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            width: 100px; /* Constrains the clickable area */
+            width: 100px;
         }
 
         .heart-node {
@@ -63,10 +62,9 @@
             position: relative;
             transform: rotate(-45deg);
             transition: all 0.5s ease;
-            margin-bottom: 20px; /* Creates consistent space for the label */
+            margin-bottom: 20px;
         }
 		
-		/* Standard CSS Heart Shape */
         .heart-node::before,
         .heart-node::after {
             content: "";
@@ -89,28 +87,12 @@
             letter-spacing: 2px;
             color: rgba(255,255,255,0.6);
             text-align: center;
-            margin-top: 10px; /* Pulls the text closer to the heart */
-        }
-
-        /* Styles for Unlocked Hearts */
-        .milestone.unlocked .heart-node {
-            background: var(--unlocked-color);
-            box-shadow: 0 0 20px var(--unlocked-color);
-            filter: drop-shadow(0 0 10px var(--unlocked-color));
+            margin-top: 35px;
         }
 
         .milestone.unlocked:hover { transform: scale(1.1); }
-
-        .date-label {
-            margin-top: 35px;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.6);
-        }
-
         .milestone.unlocked .date-label { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* Locked Shake Animation */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -133,6 +115,17 @@
 
         #toast.show { visibility: visible; animation: fadeInOut 2s; }
 
+        /* Easter Egg Counter Style */
+        .click-counter {
+            position: fixed;
+            bottom: 10px;
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.15);
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
         @keyframes fadeInOut {
             0% { opacity: 0; bottom: 0; }
             20% { opacity: 1; bottom: 30px; }
@@ -145,10 +138,11 @@
 
     <h1>Our Valentine's Roadmap</h1>
 
-    <div class="path-container" id="roadmap">
-        </div>
+    <div class="path-container" id="roadmap"></div>
 
     <div id="toast">Patience, Ella... it's not time yet. ❤️</div>
+    
+    <div id="counter-text" class="click-counter">Impatience Level: <span id="count">0</span></div>
 
     <script>
         const milestones = [
@@ -161,10 +155,11 @@
             { date: '2026-02-14', label: 'THE FINALE', link: './letter.html' }
         ];
 
+        let ellaPatienceCounter = 0;
         const container = document.getElementById('roadmap');
         const now = new Date();
 
-        milestones.forEach((m, index) => {
+        milestones.forEach((m) => {
             const mDate = new Date(m.date);
             const isUnlocked = now >= mDate;
 
@@ -179,6 +174,9 @@
                 if (isUnlocked) {
                     window.location.href = m.link;
                 } else {
+                    ellaPatienceCounter++;
+                    updateEasterEgg();
+                    
                     div.classList.add('shake');
                     setTimeout(() => div.classList.remove('shake'), 400);
                     showToast();
@@ -188,8 +186,31 @@
             container.appendChild(div);
         });
 
+        function updateEasterEgg() {
+            const counterDiv = document.getElementById("counter-text");
+            const countSpan = document.getElementById("count");
+            
+            countSpan.innerText = ellaPatienceCounter;
+            
+            if (ellaPatienceCounter >= 3) {
+                counterDiv.style.opacity = "1";
+            }
+        }
+
         function showToast() {
             const x = document.getElementById("toast");
+            
+            // Dynamic messages based on how many times she clicks
+            if (ellaPatienceCounter > 15) {
+                x.innerText = "I love you po pero kalmahan mo lang HAHAHA 😂";
+            } else if (ellaPatienceCounter > 10) {
+                x.innerText = "Hui tama na po ate";
+            } else if (ellaPatienceCounter > 5) {
+                x.innerText = "Still locked! Try again tomorrow? 🔒";
+            } else {
+                x.innerText = "Patience, Ella... it's not time yet. ❤️";
+            }
+
             x.className = "show";
             setTimeout(() => { x.className = x.className.replace("show", ""); }, 2000);
         }
