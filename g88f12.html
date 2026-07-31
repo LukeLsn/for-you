@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Girlfriend's Day!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #120914;
+            --envelope-color: #e8d0d5;
+            --envelope-front: #f2e2e5;
+            --seal-color: #d4af37;
+            --accent-pink: #ff758f;
+        }
+
+        body {
+            background: var(--bg-color);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+        }
+
+        #sparkle-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #2d142c 0%, #100613 100%);
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 182, 193, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatUp var(--duration) linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(100vh) scale(0.8) rotate(0deg); }
+            50% { opacity: 0.8; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1.2) rotate(360deg); }
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 500px;
+            height: 350px;
+            cursor: pointer;
+            z-index: 2;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .envelope-wrapper.open {
+            transform: translateY(150px);
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--envelope-color);
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255, 117, 143, 0.2);
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 3;
+            border-left: 250px solid transparent;
+            border-right: 250px solid transparent;
+            border-top: 175px solid var(--envelope-color);
+            transform-origin: top;
+            transition: transform 0.8s ease;
+        }
+
+        .envelope::after {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-top: 175px solid transparent;
+            border-left: 250px solid var(--envelope-front);
+            border-right: 250px solid var(--envelope-front);
+            border-bottom: 175px solid var(--envelope-front);
+            border-radius: 0 0 15px 15px;
+        }
+
+        /* Wax Seal Icon */
+        .wax-seal {
+            position: absolute;
+            top: 175px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, #f39c12, #d4af37);
+            border-radius: 50%;
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transition: opacity 0.4s ease, visibility 0.4s;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: #5c3d00;
+            font-weight: bold;
+            border: 2px dashed #b8860b;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 85%;
+            background: #fffbf7;
+            padding: 40px;
+            z-index: 1;
+            transition: all 0.8s ease;
+            border-radius: 8px;
+            box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.1);
+            visibility: hidden;
+            opacity: 0;
+            overflow-y: auto;
+            border: 1px solid #f0e6d2;
+        }
+
+        .open .envelope::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+        
+        .open .wax-seal {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .open .letter {
+            visibility: visible;
+            opacity: 1;
+            height: 620px;
+            width: 110%;
+            left: -5%;
+            bottom: 120px; 
+            z-index: 5;
+            padding: 45px 35px;
+            box-sizing: border-box;
+        }
+
+        .instruction {
+            transition: opacity 0.5s ease;
+        }
+        .open .instruction {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: #ffe6ea;
+            color: #c9184a;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .letter-heading {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #800f2f;
+            margin-top: 10px;
+        }
+
+        .quote-box {
+            background: #fdf0f2;
+            border-left: 3px solid var(--accent-pink);
+            padding: 12px 18px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #59202b;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .letter-text {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: #3d2b2e;
+        }
+
+        .reason-card {
+            background: #ffffff;
+            border: 1px solid #fae1e5;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .reason-card:hover {
+            transform: translateX(5px);
+            border-color: var(--accent-pink);
+        }
+
+        @media (max-width: 600px) {
+            .envelope-wrapper { 
+                width: 85vw; 
+                height: calc(85vw * 0.7); 
+            }
+            
+            .envelope-wrapper.open {
+                transform: translateY(18vh);
+            }
+
+            .envelope::before { 
+                border-left: 42.5vw solid transparent; 
+                border-right: 42.5vw solid transparent; 
+                border-top: 30vw solid var(--envelope-color); 
+            }
+            
+            .envelope::after { 
+                border-left: 42.5vw solid var(--envelope-front); 
+                border-right: 42.5vw solid var(--envelope-front); 
+                border-top: 30vw solid transparent; 
+                border-bottom: 30vw solid var(--envelope-front); 
+            }
+
+            .open .letter { 
+                width: 92vw; 
+                height: 68vh; 
+                left: -3.5vw; 
+                bottom: 15vh; 
+                padding: 25px 20px; 
+            }
+            
+            .letter-text {
+                font-size: 0.95rem;
+                line-height: 1.65;
+            }
+        }
+
+        .letter::-webkit-scrollbar { width: 5px; }
+        .letter::-webkit-scrollbar-thumb { background: rgba(201, 24, 74, 0.2); border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <audio id="background-music" loop>
+        <source src="./wanderlust.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="sparkle-container"></div>
+
+    <div class="envelope-wrapper" onclick="openLetter(this)">
+        <div class="envelope">
+            <div class="wax-seal">E</div>
+            <div class="letter">
+                <div class="container-fluid">
+                    <div class="text-center mb-3">
+                        <span class="badge-tag">August 1st Special</span>
+                        <h1 class="letter-heading">Happy Girlfriend's Day, Ella</h1>
+                    </div>
+
+                    <div class="quote-box">
+                        "Distance tests what is real, but choosing each other through every storm is what makes us forever."
+                    </div>
+
+                    <div class="letter-text">
+                        Dearest Ella,<br><br>
+
+                        On this Girlfriend’s Day, I wanted to take a moment away from all the noise to tell you what’s really in my heart. Being miles apart isn’t easy—there are days when the physical distance feels heavy, and words through a screen don't always say what we truly feel. Yet, despite every obstacle distance throws at us, you continue to be my safest place.<br><br>
+
+                        I know we’ve had our fair share of misunderstandings along the way. There were moments when silence felt heavy, or when things got complicated and emotional. But what makes us *us* isn't the absence of conflict—it's the way we always find our way back to each other. Thank you for never giving up on us, and for constantly choosing me even when it would have been easier to walk away.<br><br>
+
+                        To be honest, I know how flawed I can be. Next to your warmth, your grace, and your beautiful heart, I often feel like I fall short. But despite all my imperfections and mistake-filled moments, you still choose to trust me. That trust is something I will never, ever take for granted:
+
+                        You are so much more than just my girlfriend; you are my home, my anchor, and my favorite decision every single day. I am so lucky to have you. <br><br>
+
+                        Happy Girlfriend's Day, my love. Distance is temporary, but my love and commitment to you aren't going anywhere.<br><br>
+
+                        <div class="text-end mt-4">
+                            <p style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #800f2f; margin: 0;">
+                                Forever & Always Yours, Luke
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="instruction text-center text-light mt-5 opacity-75" style="letter-spacing: 1px; font-size: 0.9rem;">
+            (Tap the seal to open your Girlfriend's Day letter ✨)
+        </p>
+    </div>
+
+    <script>
+        function openLetter(wrapper) {
+            const music = document.getElementById('background-music');
+            
+            wrapper.classList.toggle('open');
+            
+            if (wrapper.classList.contains('open')) {
+                music.play().catch(e => console.log("Playback blocked until user interacts."));
+            } else {
+                music.pause();
+                music.currentTime = 0;
+            }
+        }
+
+        // Floating particles generation
+        const container = document.getElementById('sparkle-container');
+        for (let i = 0; i < 40; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const size = (Math.random() * 6 + 3) + 'px';
+            particle.style.width = size;
+            particle.style.height = size;
+            particle.style.left = Math.random() * 100 + '%';
+            
+            const colors = ['rgba(255, 182, 193, 0.7)', 'rgba(255, 215, 0, 0.6)', 'rgba(255, 117, 143, 0.5)'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            particle.style.setProperty('--duration', (Math.random() * 6 + 6) + 's');
+            particle.style.animationDelay = (Math.random() * 5) + 's';
+            
+            container.appendChild(particle);
+        }
+    </script>
+</body>
+</html>

@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Journey to Feb 14</title>
+    <title>Our Journey Together</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0b1021;
             --locked-color: rgba(255, 255, 255, 0.2);
             --unlocked-color: #ff4d6d;
+            --star-unlocked: #ffd700;
         }
 
         body {
@@ -45,6 +46,7 @@
             z-index: 0;
         }
 
+        /* Main Heart Milestones */
         .milestone {
             position: relative;
             z-index: 1;
@@ -88,10 +90,42 @@
             color: rgba(255,255,255,0.6);
             text-align: center;
             margin-top: 35px;
+            white-space: nowrap;
         }
 
         .milestone.unlocked:hover { transform: scale(1.1); }
         .milestone.unlocked .date-label { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        /* Floating Random Stars */
+        .floating-star {
+            position: absolute;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: 110px;
+        }
+
+        .star-shape {
+            font-size: 1.8rem;
+            color: var(--locked-color);
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
+        }
+
+        .floating-star.unlocked .star-shape {
+            color: var(--star-unlocked);
+            filter: drop-shadow(0 0 12px var(--star-unlocked));
+        }
+
+        .floating-star .date-label {
+            margin-top: 5px;
+            font-size: 0.75rem;
+        }
+
+        .floating-star.unlocked:hover { transform: scale(1.15); }
+        .floating-star.unlocked .date-label { color: #fff; }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -136,7 +170,7 @@
 </head>
 <body>
 
-    <h1>Our Valentine's Roadmap</h1>
+    <h1>Our Journey Together</h1>
 
     <div class="path-container" id="roadmap"></div>
 
@@ -145,46 +179,110 @@
     <div id="counter-text" class="click-counter">Impatience Level: <span id="count">0</span></div>
 
     <script>
+        // Main roadmap (Hearts on the main path)
         const milestones = [
-            { date: '2026-02-01', label: 'FEB 01', link: './a4f1e9.html' },
-            { date: '2026-02-01', label: 'FEB 03', link: './b82c7d.html' },
-            { date: '2026-02-01', label: 'FEB 05', link: './c55b81.html' },
-            { date: '2026-02-01', label: 'FEB 07', link: './d36a24.html' },
-            { date: '2026-02-01', label: 'FEB 09', link: './e019fb.html' },
-            { date: '2026-02-01', label: 'FEB 11', link: './f77e30.html' },
-            { date: '2026-02-01', label: 'THE FINALE', link: './letter.html' }
+            { id: 0, date: '2026-02-01', label: 'FEB 01', link: './a4f1e9.html' },
+            { id: 1, date: '2026-02-01', label: 'FEB 03', link: './b82c7d.html' },
+            { id: 2, date: '2026-02-01', label: 'FEB 05', link: './c55b81.html' },
+            { id: 3, date: '2026-02-01', label: 'FEB 07', link: './d36a24.html' },
+            { id: 4, date: '2026-02-01', label: 'FEB 09', link: './e019fb.html' },
+            { id: 5, date: '2026-02-01', label: 'FEB 11', link: './f77e30.html' },
+            { id: 6, date: '2026-02-01', label: 'THE FINALE', link: './letter.html' }
+        ];
+
+        // Standalone floating nodes (Stars scattered on the sides)
+        // Add as many future dates here as you'd like!
+        const extraNodes = [
+            { 
+                date: '2026-08-01', 
+                label: "GIRLFRIEND'S DAY", 
+                link: './g88f12.html' 
+            }
         ];
 
         let ellaPatienceCounter = 0;
         const container = document.getElementById('roadmap');
         const now = new Date();
 
-        milestones.forEach((m) => {
+        // Render main roadmap hearts
+        milestones.forEach((m, index) => {
             const mDate = new Date(m.date);
             const isUnlocked = now >= mDate;
 
             const div = document.createElement('div');
             div.className = `milestone ${isUnlocked ? 'unlocked' : 'locked'}`;
+            div.id = `milestone-${index}`;
             div.innerHTML = `
                 <div class="heart-node"></div>
                 <div class="date-label">${m.label}</div>
             `;
 
-            div.onclick = () => {
-                if (isUnlocked) {
-                    window.location.href = m.link;
-                } else {
-                    ellaPatienceCounter++;
-                    updateEasterEgg();
-                    
-                    div.classList.add('shake');
-                    setTimeout(() => div.classList.remove('shake'), 400);
-                    showToast();
-                }
-            };
-
+            div.onclick = () => handleNodeClick(isUnlocked, m.link, div);
             container.appendChild(div);
         });
+
+        // Smart Collision-Free Layout for Stars
+        if (extraNodes.length > 0) {
+            const containerHeight = container.offsetHeight || 800;
+            const minPadding = 30; // Margin top/bottom
+            const minVerticalDistance = 70; // Minimum px distance between stars vertically
+            
+            // Generate available vertical zone slots
+            const slotHeight = Math.max(minVerticalDistance, (containerHeight - (minPadding * 2)) / extraNodes.length);
+            
+            // Shuffle array of indices to randomize which slot each star gets
+            const slots = Array.from({ length: extraNodes.length }, (_, i) => i);
+            slots.sort(() => Math.random() - 0.5);
+
+            extraNodes.forEach((star, index) => {
+                const sDate = new Date(star.date);
+                const isUnlocked = now >= sDate;
+
+                const starDiv = document.createElement('div');
+                starDiv.className = `floating-star ${isUnlocked ? 'unlocked' : 'locked'}`;
+                starDiv.innerHTML = `
+                    <div class="star-shape">★</div>
+                    <div class="date-label">${star.label}</div>
+                `;
+
+                // Alternate/Randomize Left & Right Sides (Safety margin: 130px - 160px from center)
+                const side = (index % 2 === 0) ? (Math.random() < 0.5 ? 'left' : 'right') : (Math.random() < 0.5 ? 'right' : 'left');
+                const horizontalOffset = 130 + Math.floor(Math.random() * 30); 
+
+                if (side === 'left') {
+                    starDiv.style.left = `calc(50% - ${horizontalOffset}px - 55px)`;
+                } else {
+                    starDiv.style.left = `calc(50% + ${horizontalOffset}px - 55px)`;
+                }
+
+                // Pick a dedicated zone slot + small random jitter inside the slot
+                const assignedSlot = slots[index];
+                const slotTop = minPadding + (assignedSlot * slotHeight);
+                const jitter = Math.random() * (slotHeight - 45); // Keeps inside slot bounds
+                
+                starDiv.style.top = `${slotTop + jitter}px`;
+
+                starDiv.onclick = (e) => {
+                    e.stopPropagation();
+                    handleNodeClick(isUnlocked, star.link, starDiv);
+                };
+
+                container.appendChild(starDiv);
+            });
+        }
+
+        function handleNodeClick(isUnlocked, link, element) {
+            if (isUnlocked) {
+                window.location.href = link;
+            } else {
+                ellaPatienceCounter++;
+                updateEasterEgg();
+                
+                element.classList.add('shake');
+                setTimeout(() => element.classList.remove('shake'), 400);
+                showToast();
+            }
+        }
 
         function updateEasterEgg() {
             const counterDiv = document.getElementById("counter-text");
@@ -200,7 +298,6 @@
         function showToast() {
             const x = document.getElementById("toast");
             
-            // Dynamic messages based on how many times she clicks
             if (ellaPatienceCounter > 15) {
                 x.innerText = "I love you po pero kalmahan mo lang HAHAHA 😂";
             } else if (ellaPatienceCounter > 10) {
